@@ -8,4 +8,5 @@ Route::post('admin/auth', [AdminController::class, 'auth'])->name('admin.auth');
 
 Route::middleware('admin')->name('admin.')->group(function () {
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('index');
+    Route::post('admin/dashboard', [AdminController::class, 'logout'])->name('logout');
 });
