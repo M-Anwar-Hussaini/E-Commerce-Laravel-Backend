@@ -49,20 +49,17 @@ class AdminController extends Controller
      */
     public function auth(AuthAdminRequest $request)
     {
-        if ($request->validated()) {
-            if (
-                Auth::guard('admin')->attempt([
-                    'email' => $request->email,
-                    'password' => $request->password
-                ])
-            ) {
-                $request->session()->regenerate();
-                return redirect()->route('admin.index');
-            } else {
-                return redirect()->route('admin.login')->with('error', 'The credentials do not much our credential');
-            }
+        $validated = $request->validated([
+            'email' => $request->email,
+            'password' => $request->password
+        ]);
+
+        if (Auth::guard('admin')->attempt($validated)) {
+            $request->session()->regenerate();
+            return redirect()->route('admin.index');
+        } else {
+            return redirect()->route('admin.login')->with('error', 'The credentials do not much our records.');
         }
-        return view('admin.dashboard');
     }
 
     /**
