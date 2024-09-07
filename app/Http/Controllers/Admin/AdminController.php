@@ -49,10 +49,7 @@ class AdminController extends Controller
      */
     public function auth(AuthAdminRequest $request)
     {
-        $validated = $request->validated([
-            'email' => $request->email,
-            'password' => $request->password
-        ]);
+        $validated = $request->validated();
 
         if (Auth::guard('admin')->attempt($validated)) {
             $request->session()->regenerate();
@@ -65,9 +62,12 @@ class AdminController extends Controller
     /**
      * Lougout the admin
      */
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::guard()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerate();
+
         return redirect()->route('admin.index');
     }
 
